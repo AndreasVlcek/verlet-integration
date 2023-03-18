@@ -1,7 +1,7 @@
 const SCREEN_WIDTH = window.innerWidth;
 const SCREEN_HEIGHT = window.innerHeight;
 
-let force_x = 0.0;
+let force_x = 100.0;
 let force_y = 300.0;
 
 class Point {
