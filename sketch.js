@@ -20,11 +20,11 @@ class Point {
     let acc_x = force_x / this.mass;
     let acc_y = force_y / this.mass;
     
-    this.x += this.vel_x * dt;
-    this.y += this.vel_y * dt;
-    
     this.vel_x += acc_x * dt;
     this.vel_y += acc_y * dt;
+    
+    this.x += this.vel_x * dt;
+    this.y += this.vel_y * dt;
   }
   
   constrain() {
