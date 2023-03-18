@@ -1,4 +1,4 @@
-const SCREEN__WIDTH = window.innerWidth;
+const SCREEN_WIDTH = window.innerWidth;
 const SCREEN_HEIGHT = window.innerHeight;
 
 let force_x = 0.0;
@@ -32,7 +32,7 @@ class Point {
     if (this.x < 0) {
       this.x = 0;
       this.vel_x *= -1;
-    } else if (this.x > SCREEN__WIDTH) {
+    } else if (this.x > SCREEN_WIDTH) {
       this.x = SCREEN_WIDTH;
       this.vel_x *= -1;
     } else if (this.y < 0) {
@@ -59,7 +59,7 @@ let points = [
 
 
 function setup() {
-  createCanvas(SCREEN__WIDTH, SCREEN_HEIGHT);
+  createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 function draw() {
