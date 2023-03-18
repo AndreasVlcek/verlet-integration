@@ -27,9 +27,26 @@ class Point {
     this.vel_y += acc_y * dt;
   }
   
+  constrain() {
+    // Bounce off the walls by flipping the velocity
+    if (this.x < 0) {
+      this.x = 0;
+      this.vel_x *= -1;
+    } else if (this.x > SCREEN__WIDTH) {
+      this.x = SCREEN_WIDTH;
+      this.vel_x *= -1;
+    } else if (this.y < 0) {
+      this.y = 0;
+      this.vel_y *= -1;
+    } else if (this.y > SCREEN_HEIGHT) {
+      this.y = SCREEN_HEIGHT;
+      this.vel_y *= -1;
+    }
+  }
+  
   render() {
     noStroke();
-    fill("white")
+    fill("white");
     circle(this.x, this.y, 20);
   }
   
@@ -51,12 +68,17 @@ function draw() {
   
   // Update all the points
   for (let point of points) {
-    point.update(dt)
+    point.update(dt);
+  }
+  
+  // Bounce all the points against the canvas
+  for (let point of points) {
+    point.constrain();
   }
   
   background("black");
   
   for (let point of points) {
-    point.render()
+    point.render();
   }
 }
