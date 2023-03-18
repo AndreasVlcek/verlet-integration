@@ -1,6 +1,9 @@
 const SCREEN__WIDTH = window.innerWidth;
 const SCREEN_HEIGHT = window.innerHeight;
 
+let force_x = 0.0;
+let force_y = 300.0;
+
 class Point {
   
   constructor(x, y, vel_x, vel_y, mass) {
@@ -12,9 +15,16 @@ class Point {
   }
   
   update(dt) {
-    /////////////////////////
-    // TODO:
-    /////////////////////////
+    
+    // This is the Euler integration method
+    let acc_x = force_x / this.mass;
+    let acc_y = force_y / this.mass;
+    
+    this.x += this.vel_x * dt;
+    this.y += this.vel_y * dt;
+    
+    this.vel_x += acc_x * dt;
+    this.vel_y += acc_y * dt;
   }
   
   render() {
@@ -36,6 +46,14 @@ function setup() {
 }
 
 function draw() {
+  // Get the time ellapsed since the last update in seconds (dt)
+  let dt = deltaTime / 1000;
+  
+  // Update all the points
+  for (let point of points) {
+    point.update(dt)
+  }
+  
   background("black");
   
   for (let point of points) {
