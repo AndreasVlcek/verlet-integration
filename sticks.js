@@ -4,31 +4,40 @@ const SCREEN_HEIGHT = window.innerHeight;
 let force_x = 100.0;
 let force_y = 300.0;
 
+function distance(p0, p1) {
+  let dx = p1.x - p0.x;
+  let dy = p1.y - p0.y;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
 class Point {
   
-  constructor(x, y, mass) {
+  constructor(x, y, mass, pinned) {
     this.x = x;
     this.y = y;
     this.old_x = x;
     this.old_y = y;
     this.mass = mass;
+    this.pinned = pinned;
   }
   
   update(dt) {
-    let vel_x = (this.x - this.old_x);
-    let vel_y = (this.y - this.old_y);
+    if (!this.pinned) {
+      let vel_x = (this.x - this.old_x);
+      let vel_y = (this.y - this.old_y);
     
-    // The current position becomes the old one
-    this.old_x = this.x;
-    this.old_y = this.y;
+      // The current position becomes the old one
+      this.old_x = this.x;
+      this.old_y = this.y;
     
-    // Compute the acceleration using a=f/m
-    let acc_x = force_x / this.mass;
-    let acc_y = force_y / this.mass;
+      // Compute the acceleration using a=f/m
+      let acc_x = force_x / this.mass;
+      let acc_y = force_y / this.mass;
     
-    // Estimate the new position using Verlet integration
-    this.x += vel_x + acc_x * dt * dt;
-    this.y += vel_y + acc_y * dt * dt;
+      // Estimate the new position using Verlet integration
+      this.x += vel_x + acc_x * dt * dt;
+      this.y += vel_y + acc_y * dt * dt;
+    }
   }
   
   constrain() {
@@ -76,11 +85,15 @@ class Stick {
     let offset_x = dx * percent;
     let offset_y = dy * percent;
     
-    this.p0.x -= offset_x;  // minus for p0
-    this.p0.y -= offset_y;
+    if (!this.p0.pinned ) {
+      this.p0.x -= offset_x;  // minus for p0
+      this.p0.y -= offset_y;
+    }
     
-    this.p1.x += offset_x;  // minus for p1
-    this.p1.y += offset_y;
+    if (!this.p1.pinned ) {
+      this.p1.x += offset_x;  // minus for p1
+      this.p1.y += offset_y;
+    }
   }
   
   render() {
@@ -89,25 +102,22 @@ class Stick {
   }
 }
 
-function distance(p0, p1) {
-  let dx = p1.x - p0.x;
-  let dy = p1.y - p0.y;
-  return Math.sqrt(dx * dx + dy * dy);
-}
-
 let points = [
-  new Point(200, 200, 1.0),  // A
-  new Point(300, 250, 1.0),  // B
-  new Point(350, 400, 1.0),  // C
-  new Point(200, 300, 1.0),  // D
+  new Point(200, 200, 1.0, false),  // A
+  new Point(300, 200, 1.0, false),  // B
+  new Point(300, 300, 1.0, false),  // C
+  new Point(200, 300, 1.0, false),  // D
+  new Point(400, 100, 1.0, true),   // Anchor
+  
 ];
 
 let sticks = [
-  new Stick(points[0], points[1], 100),  // A-----B
-  new Stick(points[1], points[2], 100),  // | \   |
-  new Stick(points[2], points[3], 100),  // |  \  |
-  new Stick(points[3], points[0], 100),  // |   \ |
-  new Stick(points[0], points[2], 141),  // B-----C
+  new Stick(points[0], points[1], distance(points[0], points[1])),  // A-----B
+  new Stick(points[1], points[2], distance(points[1], points[2])),  // | \   |
+  new Stick(points[2], points[3], distance(points[2], points[3])),  // |  \  |
+  new Stick(points[3], points[0], distance(points[3], points[0])),  // |   \ |
+  new Stick(points[0], points[2], distance(points[0], points[2])),  // B-----C
+  new Stick(points[4], points[2], distance(points[4], points[2])),  //        \_(anchor)
 ];
 
 function setup() {
