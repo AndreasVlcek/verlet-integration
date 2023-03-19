@@ -96,12 +96,18 @@ function distance(p0, p1) {
 }
 
 let points = [
-  new Point(250, 100, 1.0),
-  new Point(450, 200, 1.0)
+  new Point(200, 200, 1.0),  // A
+  new Point(300, 250, 1.0),  // B
+  new Point(350, 400, 1.0),  // C
+  new Point(200, 300, 1.0),  // D
 ];
 
 let sticks = [
-  new Stick(points[0], points[1], distance(points[0], points[1]))
+  new Stick(points[0], points[1], 100),  // A-----B
+  new Stick(points[1], points[2], 100),  // | \   |
+  new Stick(points[2], points[3], 100),  // |  \  |
+  new Stick(points[3], points[0], 100),  // |   \ |
+  new Stick(points[0], points[2], 141),  // B-----C
 ];
 
 function setup() {
