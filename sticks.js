@@ -67,7 +67,20 @@ class Stick {
   }
   
   update(dt) {
-    // TODO
+    let dx = this.p1.x - this.p0.x;
+    let dy = this.p1.y - this.p0.y;
+    let dist = Math.sqrt(dx * dx + dy * dy);
+    let diff = this.length - dist;
+    let percent = (diff / dist) / 2;
+    
+    let offset_x = dx * percent;
+    let offset_y = dy * percent;
+    
+    this.p0.x -= offset_x;  // minus for p0
+    this.p0.y -= offset_y;
+    
+    this.p1.x += offset_x;  // minus for p1
+    this.p1.y += offset_y;
   }
   
   render() {
