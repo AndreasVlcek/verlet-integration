@@ -32,7 +32,23 @@ class Point {
   }
   
   constrain() {
-    // TODO: Bounce of the walls
+    // Bounce of the walls
+    let vel_x = (this.x - this.old_x);
+    let vel_y = (this.y - this.old_y);
+    
+    if (this.x < 0) {
+      this.x = 0;
+      this.old_x = this.x + vel_x;
+    } else if (this.x > SCREEN_WIDTH) {
+      this.x = SCREEN_WIDTH;
+      this.old_x = this.x + vel_x;
+    } else if (this.y < 0) {
+      this.y = 0;
+      this.old_y = this.y + vel_y;
+    } else if (this.y > SCREEN_HEIGHT) {
+      this.y = SCREEN_HEIGHT;
+      this.old_y = this.y + vel_y;
+    }
   }
   
   render() {
