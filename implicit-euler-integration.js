@@ -6,20 +6,42 @@ let force_y = 300.0;
 
 class Point {
   
-  constructor(x, y, mass) {
+  constructor(x, y, vel_x, vel_y, mass) {
     this.x = x;
     this.y = y;
-    this.old_x = x;
-    this.old_y = y;
+    this.vel_x = vel_x;
+    this.vel_y = vel_y;
     this.mass = mass;
   }
   
   update(dt) {
-    // TODO: Use Verlet  
+    
+    // This is the implicit Euler integration method
+    let acc_x = force_x / this.mass;
+    let acc_y = force_y / this.mass;
+    
+    this.vel_x += acc_x * dt;
+    this.vel_y += acc_y * dt;
+    
+    this.x += this.vel_x * dt;
+    this.y += this.vel_y * dt;
   }
   
   constrain() {
-    // TODO: Bounce of the walls
+    // Bounce off the walls by flipping the velocity
+    if (this.x < 0) {
+      this.x = 0;
+      this.vel_x *= -1;
+    } else if (this.x > SCREEN_WIDTH) {
+      this.x = SCREEN_WIDTH;
+      this.vel_x *= -1;
+    } else if (this.y < 0) {
+      this.y = 0;
+      this.vel_y *= -1;
+    } else if (this.y > SCREEN_HEIGHT) {
+      this.y = SCREEN_HEIGHT;
+      this.vel_y *= -1;
+    }
   }
   
   render() {
@@ -31,8 +53,8 @@ class Point {
 }
 
 let points = [
-  new Point(350, 300, 1.0),
-  new Point(450, 300, 1.0)
+  new Point(350, 300, 0, 50, 1.0),
+  new Point(450, 300, 0, 50, 1.0)
 ]
 
 
