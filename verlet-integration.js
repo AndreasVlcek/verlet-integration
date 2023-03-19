@@ -7,17 +7,32 @@ let force_y = 300.0;
 class Point {
   
   constructor(x, y, mass) {
-      this.x = x;
-      this.y = y;
-      this.mass = mass;
+    this.x = x;
+    this.y = y;
+    this.old_x = x;
+    this.old_y = y;
+    this.mass = mass;
   }
   
   update(dt) {
-    // TODO: Verlet integration
+    let vel_x = (this.x - this.old_x);
+    let vel_y = (this.y - this.old_y);
+    
+    // The current position becomes the old one
+    this.old_x = this.x;
+    this.old_y = this.y;
+    
+    // Compute the acceleration using a=f/m
+    let acc_x = force_x / this.mass;
+    let acc_y = force_y / this.mass;
+    
+    // Estimate the new position using Verlet integration
+    this.x += vel_x + acc_x * dt * dt;
+    this.y += vel_y + acc_y * dt * dt;
   }
   
   constrain() {
-    // TODO: Bounce off the walls by flipping the velocity
+    // TODO: Bounce of the walls
   }
   
   render() {
