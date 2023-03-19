@@ -56,14 +56,40 @@ class Point {
     fill("white");
     circle(this.x, this.y, 20);
   }
+}
+
+class Stick {
   
+  constructor(p0, p1, length) {
+    this.p0 = p0;
+    this.p1 = p1;
+    this.length = length;
+  }
+  
+  update(dt) {
+    // TODO
+  }
+  
+  render() {
+    stroke('white');
+    line(this.p0.x, this.p0.y, this.p1.x, this.p1.y);
+  }
+}
+
+function distance(p0, p1) {
+  let dx = p1.x - p0.x;
+  let dy = p1.y - p0.y;
+  return Math.sqrt(dx * dx + dy * dy);
 }
 
 let points = [
-  new Point(350, 300, 1.0),
-  new Point(450, 300, 1.0)
-]
+  new Point(250, 100, 1.0),
+  new Point(450, 200, 1.0)
+];
 
+let sticks = [
+  new Stick(points[0], points[1], distance(points[0], points[1]))
+];
 
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -78,12 +104,21 @@ function draw() {
     point.update(dt);
   }
   
+  // Update all the sticks
+  for (let stick of sticks) {
+    stick.update(dt);
+  }
+  
   // Bounce all the points against the canvas
   for (let point of points) {
     point.constrain();
   }
   
   background("black");
+  
+  for (let stick of sticks) {
+    stick.render();
+  }
   
   for (let point of points) {
     point.render();
