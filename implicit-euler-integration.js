@@ -7,11 +7,11 @@ let force_y = 300.0;
 class Point {
   
   constructor(x, y, vel_x, vel_y, mass) {
-      this.x = x;
-      this.y = y;
-      this.vel_x = vel_x;
-      this.vel_y = vel_y;
-      this.mass = mass;
+    this.x = x;
+    this.y = y;
+    this.vel_x = vel_x;
+    this.vel_y = vel_y;
+    this.mass = mass;
   }
   
   update(dt) {
