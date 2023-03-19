@@ -62,7 +62,7 @@ class Point {
 let points = [
   new Point(350, 300, 1.0),
   new Point(450, 300, 1.0)
-]
+];
 
 
 function setup() {
